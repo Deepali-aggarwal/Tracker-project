@@ -7,7 +7,11 @@ addbtn.addEventListener('click', function(e){
         return;
     }else{
         const li = document.createElement('li');
+        li.classList.add('task-link');
+
+        //checkbox
         const input = document.createElement('input');
+        input.classList.add('check');
         input.type = "checkbox";
         input.addEventListener('change', function(e){
             if(input.checked){
@@ -15,36 +19,72 @@ addbtn.addEventListener('click', function(e){
             }else{
                 li.classList.remove('completed');
             }
-            updatecounter();
+            updateCounter();
         })
-        const span = document.createElement('span');
-        span.innerText = textTask.value;
-        li.appendChild(span);
 
+        //text
+        const span = document.createElement('span');
+        span.classList.add('task-text')
+        span.innerText = textTask.value;
+
+
+        //delete
         const deletebutton = document.createElement('button');
+        deletebutton.classList.add('dltbtn')
         deletebutton.innerText = "DELETE";
         deletebutton.addEventListener('click', function(e){
             li.remove();
-            updatecounter();
+            updateCounter();
         })
-        li.appendChild(deletebutton);
-
-
-
         li.appendChild(input);
+        li.appendChild(span);
+        li.appendChild(deletebutton);
 
         list.appendChild(li);
         textTask.value = "";
+
+        updateCounter();
+    }
+})
+
+//enter key to add task
+
+const addTask = document.querySelector('#text');
+addTask.addEventListener('keydown', function(e){
+    if(e.key === "Enter"){
+        addbtn.click();
     }
 })
 
 
+
+
 //update and complete
 
-function updatecounter(){
-    const totalTaskcounter = document.querySelectorAll('#task-list li').length;
-    const completedtaskcounter = document.querySelectorAll('#task-list li.completed').length;
+function updateCounter(){
+    const totalTaskcounter = document.querySelectorAll('.task-link').length;
+    const completedtaskcounter = document.querySelectorAll('.task-link.completed').length;
 
     taskCounter.textContent = `Total: ${totalTaskcounter} | Completed: ${completedtaskcounter}`
+
 }
+
+//clear all completed at once 
+
+const clearCompleted = document.querySelector('#clear-completed-btn');
+clearCompleted.addEventListener('click', function(e){
+    const completedTask = document.querySelectorAll('input[type="checkbox"]:checked');
+    completedTask.forEach(function(checked){
+        checked.parentElement.remove();
+    })
+    updateCounter();
+})
+
+
+
+function store(){
+    const all = [];
+    const taskstore = document.querySelectorAll('.task-link');
+}
+
 
